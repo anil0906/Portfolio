@@ -29547,6 +29547,12 @@
 	  },
 
 	  render: function render() {
+	    {
+	      console.log("in bloglist:>");
+	    }
+	    {
+	      console.log(this.props);
+	    }
 	    return React.createElement(BlogList, { blogList: this.props.blogList });
 	  }
 	});
@@ -29788,6 +29794,7 @@
 	  },
 
 	  render: function render() {
+
 	    return React.createElement(Profile, { profile: this.props.profile });
 	  }
 	});
@@ -29836,19 +29843,31 @@
 /* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var React = __webpack_require__(4);
-	function Profile() {
+	var Project = __webpack_require__(288);
+	function Profile(props) {
+	  var projects = [];
+	  if (props.profile.projects) {
+	    projects = props.profile.projects.map(function (project) {
+	      return React.createElement(Project, { key: project.id, project: project });
+	    });
+	  }
+
 	  return React.createElement(
-	    "div",
-	    { className: "profile" },
+	    'div',
+	    { className: 'profile' },
 	    React.createElement(
-	      "h1",
-	      { className: "profile-heading" },
-	      "this is profile"
+	      'h1',
+	      { className: 'profile-heading' },
+	      'this is profile'
 	    ),
-	    React.createElement("div", { className: "profile-content" })
+	    React.createElement(
+	      'div',
+	      { className: 'profile-content' },
+	      projects
+	    )
 	  );
 	}
 	module.exports = Profile;
@@ -29888,6 +29907,73 @@
 	  );
 	}
 	module.exports = Error;
+
+/***/ },
+/* 288 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(4);
+	var Link = __webpack_require__(173).Link;
+	function Project(props) {
+	  return React.createElement(
+	    'div',
+	    { className: 'project' },
+	    React.createElement(
+	      'div',
+	      { className: 'project-image' },
+	      React.createElement(
+	        Link,
+	        { to: props.project.url },
+	        React.createElement('img', { src: props.project.image })
+	      )
+	    ),
+	    React.createElement(
+	      'div',
+	      { className: 'project-content' },
+	      React.createElement(
+	        'div',
+	        { className: 'project-heading' },
+	        React.createElement(
+	          Link,
+	          { to: props.project.url },
+	          props.project.name
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'project-detail' },
+	        props.project.description
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'project-tech' },
+	        props.project.technologies.map(function (tech, index) {
+	          return React.createElement(
+	            'span',
+	            { key: index },
+	            tech,
+	            ' *'
+	          );
+	        })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'project-platform' },
+	        props.project.platforms.map(function (platform, index) {
+	          return React.createElement(
+	            'span',
+	            { key: index },
+	            platform,
+	            ' *'
+	          );
+	        })
+	      )
+	    )
+	  );
+	}
+	module.exports = Project;
 
 /***/ }
 /******/ ]);

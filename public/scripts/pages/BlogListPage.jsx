@@ -12,6 +12,8 @@ var BlogListPage = React.createClass({
     this.props.fetchData();
   },
   render: function() {
+    {console.log("in bloglist:>")}
+      {console.log(this.props)}
     return (
       <BlogList blogList={this.props.blogList} />
     );

@@ -7,6 +7,7 @@ var ProfilePage = React.createClass({
     this.props.fetchData();
   },
   render: function() {
+  
     return (
       <Profile profile={this.props.profile} />
     );
