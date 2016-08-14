@@ -1,0 +1,7 @@
+{
+  "id":1,
+  "heading": "Heading of blogpost : No topic suggested",
+  "content": "<p>ECMAScript 6 (ES6) is the latest JavaScript standard and it's a pretty big deal.  It has a lot of really nice new features that make JavaScript much easier to work with.  But it's quite different.  In fact, if you don't understand the new features, when you look at JavaScript written using ES6, you're going to struggle.</p><p>The goal of this primer is to get you up and running with ES6 right away.  ES6 has a lot of new features, but for this primer I'm only going to cover the most important ones.  Just enough so that you'll know what you're doing. I'll also sprinkle around some links to help you dive into the details where you want to.  </p><p>I'm heavily indebted to MDN and Luke Hoban for these examples.  You can find Luke's excellent write up <a href=\"https://github.com/lukehoban/es6features\" target=\"_blank\">here</a> and I have links to MDN throughout.</p><h2 id=\"background\">Background</h2><p>There was a 6 year <a href=\"https://en.wikipedia.org/wiki/ECMAScript#Versions\" target=\"_blank\">gap</a> between ES5 and ES6 which in Web Development terms is a lifetime. The previous standard, ECMAScript 5 was written in 2009 when web development was a very different place.</p><p><img src=\"https://dl.dropboxusercontent.com/u/335720772/Screen%20Shot%202016-05-18%20at%206.15.05%20PM.png\" alt=\"Web Trends\" title=\"\">  </p>",
+  "date": "16 July, 2016",
+  "tags": ["general","react","firstpost"]
+}

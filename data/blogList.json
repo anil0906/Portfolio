@@ -1,0 +1,16 @@
+[
+  {
+    "id":1,
+    "heading": "Heading of blogpost : No topic suggested",
+    "cardText": "Content of this blogpost is temporary and will be gathered from Server later. Also Reflux is yet to be implemented",
+    "date": "16 July, 2016",
+    "tags": ["general","react","firstpost"]
+  },
+  {
+    "id":2,
+    "heading": "Heading of blogpost : No topic suggested",
+    "cardText": "Content of this blogpost is temporary and will be gathered from Server later. Also Reflux is yet to be implemented",
+    "date": "16 July, 2016",
+    "tags": ["general","react","firstpost"]
+  }
+]

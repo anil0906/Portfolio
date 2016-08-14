@@ -1,0 +1,15 @@
+{
+"description" : "This is demo profile description",
+"technologies" : ["java", "Spring" , "Hibernate" , "React", "Javascript", "node"],
+"projects": [
+   {
+  "id": 1,
+  "name": "Portfolio and Blog",
+  "description":"This is demo project description",
+  "url": "",
+  "image": "",
+  "platform": ["web","ios","android"],
+  "technologies" : ["React", "Redux" , "React Router" , "node", "HTML5", ""]
+  }
+ ]
+}
