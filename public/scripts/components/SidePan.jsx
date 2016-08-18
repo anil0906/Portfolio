@@ -8,7 +8,7 @@ var SidePan = React.createClass({
           <div className="avatar">
           </div>
           <div className="profile-name">
-            <Link to="/home"> Anil Sharma</Link>
+             <Link to="/home"> Anil Sharma</Link> 
           </div>
         </div>
         <div className="menu">

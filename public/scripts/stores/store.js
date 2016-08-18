@@ -5,7 +5,7 @@ var rootReducer = require('../reducers/index');
 var defaultState = {
   blogList: [],
   blog: {},
-  util:{isLoading:false},
+  util:{isLoading:false, isScroll: false},
   profile: {}
 };
 

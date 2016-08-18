@@ -6,7 +6,17 @@ FETCH_START = "FETCH_START",
 FETCH_END = "FETCH_END",
 VALID_DATA = "VALID_DATA",
 DATA_ERROR = "DATA_ERROR",
+STRETCH_HEADER = "STRETCH_HEADER",
+COLLAPSE_HEADER = "COLLAPSE_HEADER",
 NOT_FOUND = "NOT_FOUND";
+
+function stretchHeader(dispatch) {
+  dispatch({type: STRETCH_HEADER});
+}
+
+function collapseHeader(dispatch) {
+  dispatch({type: COLLAPSE_HEADER});
+}
 
 function fetchBlogs(dispatch){
     dispatch({type: FETCH_START});
@@ -144,8 +154,12 @@ var exportObject = {
   "fetchBlogs":fetchBlogs,
   "fetchProfile":fetchProfile,
   "fetchSingleBlog":fetchSingleBlog,
+  "collapseHeader": collapseHeader,
+  "stretchHeader": stretchHeader,
   VALID_DATA:VALID_DATA,
   DATA_ERROR: DATA_ERROR,
-  NOT_FOUND: NOT_FOUND
+  NOT_FOUND: NOT_FOUND,
+  STRETCH_HEADER: STRETCH_HEADER,
+  COLLAPSE_HEADER: COLLAPSE_HEADER
 };
 module.exports = exportObject;

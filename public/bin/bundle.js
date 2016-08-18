@@ -28763,7 +28763,7 @@
 	var defaultState = {
 	  blogList: [],
 	  blog: {},
-	  util: { isLoading: false },
+	  util: { isLoading: false, isScroll: false },
 	  profile: {}
 	};
 
@@ -29191,7 +29191,17 @@
 	    FETCH_END = "FETCH_END",
 	    VALID_DATA = "VALID_DATA",
 	    DATA_ERROR = "DATA_ERROR",
+	    STRETCH_HEADER = "STRETCH_HEADER",
+	    COLLAPSE_HEADER = "COLLAPSE_HEADER",
 	    NOT_FOUND = "NOT_FOUND";
+
+	function stretchHeader(dispatch) {
+	  dispatch({ type: STRETCH_HEADER });
+	}
+
+	function collapseHeader(dispatch) {
+	  dispatch({ type: COLLAPSE_HEADER });
+	}
 
 	function fetchBlogs(dispatch) {
 	  dispatch({ type: FETCH_START });
@@ -29317,9 +29327,13 @@
 	  "fetchBlogs": fetchBlogs,
 	  "fetchProfile": fetchProfile,
 	  "fetchSingleBlog": fetchSingleBlog,
+	  "collapseHeader": collapseHeader,
+	  "stretchHeader": stretchHeader,
 	  VALID_DATA: VALID_DATA,
 	  DATA_ERROR: DATA_ERROR,
-	  NOT_FOUND: NOT_FOUND
+	  NOT_FOUND: NOT_FOUND,
+	  STRETCH_HEADER: STRETCH_HEADER,
+	  COLLAPSE_HEADER: COLLAPSE_HEADER
 	};
 	module.exports = exportObject;
 
@@ -29351,16 +29365,24 @@
 
 	var FETCH_START = __webpack_require__(271).FETCH_START;
 	var FETCH_END = __webpack_require__(271).FETCH_END;
+	var STRETCH_HEADER = __webpack_require__(271).STRETCH_HEADER;
+	var COLLAPSE_HEADER = __webpack_require__(271).COLLAPSE_HEADER;
 	function util(state, action) {
 	  if (!state) {
-	    state = { isLoading: false };
+	    state = { isLoading: false, isScroll: false };
 	  }
 	  switch (action.type) {
 	    case FETCH_START:
-	      var newState = { isLoading: true };
+	      var newState = { isLoading: true, isScroll: state.isScroll };
 	      return newState;
 	    case FETCH_END:
-	      var newState = { isLoading: false, error: action.error };
+	      var newState = { isLoading: false, error: action.error, isScroll: state.isScroll };
+	      return newState;
+	    case STRETCH_HEADER:
+	      var newState = { isScroll: false };
+	      return newState;
+	    case COLLAPSE_HEADER:
+	      var newState = { isScroll: true };
 	      return newState;
 	  }
 	  return state;
@@ -29406,8 +29428,8 @@
 	var BlogListPage = __webpack_require__(279);
 	var SingleBlogPage = __webpack_require__(282);
 	var ProfilePage = __webpack_require__(284);
-	var NotFound = __webpack_require__(286);
-	var Error = __webpack_require__(287);
+	var NotFound = __webpack_require__(287);
+	var Error = __webpack_require__(288);
 	var routes = React.createElement(
 	               Route,
 	               { path: '/', component: Container },
@@ -29428,9 +29450,12 @@
 	'use strict';
 
 	var React = __webpack_require__(4);
-	var SidePan = __webpack_require__(277);
+	var Header = __webpack_require__(277);
 	var Loader = __webpack_require__(278);
 	var connect = __webpack_require__(235).connect;
+	var _stretchHeader = __webpack_require__(271).stretchHeader;
+	var _collapseHeader = __webpack_require__(271).collapseHeader;
+
 	var Container = React.createClass({
 	  displayName: 'Container',
 
@@ -29438,7 +29463,7 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'container' },
-	      React.createElement(SidePan, null),
+	      React.createElement(Header, { isScroll: this.props.util.isScroll, stretchHeader: this.props.stretchHeader, collapseHeader: this.props.collapseHeader }),
 	      React.createElement(
 	        'div',
 	        { className: 'main-content' },
@@ -29448,7 +29473,6 @@
 	    );
 	  }
 	});
-
 	function mapStateToProps(state, ownProps) {
 	  var util = state.util;
 	  return {
@@ -29456,8 +29480,18 @@
 	    "children": ownProps.children
 	  };
 	}
+	function mapDispatchToProps(dispatch, ownProps) {
+	  return {
+	    stretchHeader: function stretchHeader() {
+	      _stretchHeader(dispatch);
+	    },
+	    collapseHeader: function collapseHeader() {
+	      _collapseHeader(dispatch);
+	    }
+	  };
+	}
 
-	module.exports = connect(mapStateToProps, null)(Container);
+	module.exports = connect(mapStateToProps, mapDispatchToProps)(Container);
 
 /***/ },
 /* 277 */
@@ -29467,45 +29501,85 @@
 
 	var React = __webpack_require__(4);
 	var Link = __webpack_require__(173).Link;
-	var SidePan = React.createClass({
-	  displayName: 'SidePan',
+	var Header = React.createClass({
+	  displayName: 'Header',
 
+	  componentDidMount: function componentDidMount() {
+	    window.addEventListener('scroll', this.handleScroll);
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    window.removeEventListener('scroll', this.handleScroll);
+	  },
+	  shouldComponentUpdate: function shouldComponentUpdate(prevProps) {
+	    console.log("!prevProps.isScroll === this.props.isScroll :: " + !prevProps.isScroll === this.props.isScroll);
+	    console.log("!prevProps.isScroll :: " + prevProps.isScroll);
+	    console.log("this.props.isScroll :: " + this.props.isScroll);
+
+	    return !prevProps.isScroll === this.props.isScroll;
+	  },
+	  handleScroll: function handleScroll(event) {
+	    var scrollTop = event.srcElement.body.scrollTop;
+	    if (scrollTop > 320) {
+	      this.props.collapseHeader();
+	    } else {
+	      this.props.stretchHeader();
+	    }
+	  },
 	  render: function render() {
+	    var isScroll = this.props.isScroll;
 	    return React.createElement(
 	      'div',
-	      { className: 'side-pan' },
+	      { className: isScroll ? "header header-fixed" : "header" },
 	      React.createElement(
 	        'div',
-	        { className: 'profile' },
-	        React.createElement('div', { className: 'avatar' }),
+	        { className: isScroll ? "profile profile-fixed" : "profile" },
+	        React.createElement('div', { className: isScroll ? "avatar avatar-fixed" : "avatar" }),
 	        React.createElement(
 	          'div',
-	          { className: 'profile-name' },
+	          { className: 'profile-text title' },
 	          React.createElement(
 	            Link,
 	            { to: '/home' },
 	            ' Anil Sharma'
 	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: isScroll ? "hidden" : "profile-text title-fourth" },
+	          'Full Stack Java and React Developer'
 	        )
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'menu' },
+	        { className: isScroll ? "nav nav-fixed" : "nav" },
 	        React.createElement(
 	          Link,
-	          { to: '/profile', className: 'menu-item' },
-	          'Profile'
+	          { to: '/profile' },
+	          React.createElement(
+	            'div',
+	            { className: 'nav-item' },
+	            'PROFILE'
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'nav-item' },
+	          '|'
 	        ),
 	        React.createElement(
 	          Link,
-	          { to: '/blog', className: 'menu-item' },
-	          'Blog'
+	          { to: '/blog' },
+	          React.createElement(
+	            'div',
+	            { className: 'nav-item' },
+	            'BLOG'
+	          )
 	        )
 	      )
 	    );
 	  }
 	});
-	module.exports = SidePan;
+	module.exports = Header;
 
 /***/ },
 /* 278 */
@@ -29846,7 +29920,7 @@
 	'use strict';
 
 	var React = __webpack_require__(4);
-	var Project = __webpack_require__(288);
+	var Project = __webpack_require__(286);
 	function Profile(props) {
 	  var projects = [];
 	  if (props.profile.projects) {
@@ -29874,42 +29948,6 @@
 
 /***/ },
 /* 286 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var React = __webpack_require__(4);
-	function NotFound() {
-	  return React.createElement(
-	    "div",
-	    { className: "blog" },
-	    React.createElement("img", { src: "images/404.jpg" })
-	  );
-	}
-	module.exports = NotFound;
-
-/***/ },
-/* 287 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var React = __webpack_require__(4);
-	function Error() {
-	  return React.createElement(
-	    "div",
-	    { className: "blog" },
-	    React.createElement(
-	      "h1",
-	      { className: "blog-heading" },
-	      "Error Page"
-	    )
-	  );
-	}
-	module.exports = Error;
-
-/***/ },
-/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29974,6 +30012,42 @@
 	  );
 	}
 	module.exports = Project;
+
+/***/ },
+/* 287 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(4);
+	function NotFound() {
+	  return React.createElement(
+	    "div",
+	    { className: "blog" },
+	    React.createElement("img", { src: "images/404.jpg" })
+	  );
+	}
+	module.exports = NotFound;
+
+/***/ },
+/* 288 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(4);
+	function Error() {
+	  return React.createElement(
+	    "div",
+	    { className: "blog" },
+	    React.createElement(
+	      "h1",
+	      { className: "blog-heading" },
+	      "Error Page"
+	    )
+	  );
+	}
+	module.exports = Error;
 
 /***/ }
 /******/ ]);
