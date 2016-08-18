@@ -1,22 +1,45 @@
 var React = require('react');
-var Logo = require('./Logo.jsx');
-var MenuIcon = require('./MenuIcon.jsx');
-var Heading = require('./Heading.jsx');
+var Link = require('react-router').Link;
 var Header = React.createClass({
-  getInitialState: function() {
-    return {
-      headingText:'Blog',
+componentDidMount: function() {
+    window.addEventListener('scroll', this.handleScroll);
+},
+componentWillUnmount: function() {
+    window.removeEventListener('scroll', this.handleScroll);
+},
+shouldComponentUpdate: function(prevProps) {
+  return !prevProps.isScroll === this.props.isScroll;
+},
+handleScroll: function(event) {
+    var scrollTop = event.srcElement.body.scrollTop;
+    if(scrollTop > 320) {
+      this.props.collapseHeader();
     }
-  },
-
-   render: function() {
-     return (
-       <div className="header">
-       <Logo src="../../images/logo.jpg" className="logo"/>
-       <Heading headingText={this.state.headingText}/>
-       <MenuIcon src="../../images/menu_1.png" className="menuIcon" areaClassName="menuInitialState"/>
-       </div>
-     );
-   }
- });
+    else {
+      this.props.stretchHeader();
+    }
+},
+  render: function() {
+    var isScroll = this.props.isScroll;
+    return (
+      <div className={ isScroll ? "header header-fixed" : "header" }>
+        <div className={isScroll ? "profile profile-fixed" : "profile"}>
+          <div className={isScroll ? "avatar avatar-fixed" : "avatar"}>
+          </div>
+          <div className="profile-text title">
+            <Link to="/home"> Anil Sharma</Link>
+          </div>
+          <div className={isScroll ? "hidden" : "profile-text title-fourth"}>
+            Full Stack Java and React Developer
+          </div>
+        </div>
+        <div className={isScroll ? "nav nav-fixed" : "nav"}>
+          <Link to="/profile"><div className="nav-item">PROFILE</div></Link>
+          <div className="nav-item">|</div>
+          <Link to="/blog"><div className="nav-item">BLOG</div></Link>
+        </div>
+      </div>
+    );
+  }
+});
  module.exports = Header;

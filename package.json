@@ -30,7 +30,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactjs/react-tutorial.git"
+    "url": "https://github.com/anil0906/Portfolio.git"
   },
   "keywords": [
     "react",
@@ -38,11 +38,11 @@
     "comment",
     "example"
   ],
-  "author": "petehunt",
+  "author": "anilsharma",
   "bugs": {
-    "url": "https://github.com/reactjs/react-tutorial/issues"
+    "url": "https://github.com/anil0906/Portfolio/issues"
   },
-  "homepage": "https://github.com/reactjs/react-tutorial",
+  "homepage": "https://github.com/anil0906/Portfolio",
   "engines": {
     "node": "0.12.x"
   }
