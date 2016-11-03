@@ -15,7 +15,7 @@ function BlogList (props) {
         openBlog={openBlog} />
     });
     return (
-      <div>{blogCards}</div>
+      <div className="inner-container">{blogCards}</div>
     );
   }
 module.exports = BlogList;

@@ -10,7 +10,7 @@ function Blog (props) {
         }
       }
     return (
-      <div className="blog">
+      <div className="blog inner-container">
         <div className="blog-heading">
         <h1>
             {heading}

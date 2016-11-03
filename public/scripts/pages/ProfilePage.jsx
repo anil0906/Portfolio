@@ -7,7 +7,7 @@ var ProfilePage = React.createClass({
     this.props.fetchData();
   },
   render: function() {
-  
+
     return (
       <Profile profile={this.props.profile} />
     );
@@ -17,7 +17,11 @@ var ProfilePage = React.createClass({
 ProfilePage.propTypes = {
   profile : React.PropTypes.shape({
     description: React.PropTypes.string,
-    technologies: React.PropTypes.arrayOf(React.PropTypes.string),
+    technologies: React.PropTypes.shape({
+      backend: React.PropTypes.arrayOf(React.PropTypes.string),
+      frontend: React.PropTypes.arrayOf(React.PropTypes.string),
+      tools: React.PropTypes.arrayOf(React.PropTypes.string)
+    }),
     projects: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.number,
       description: React.PropTypes.string,

@@ -29514,22 +29514,33 @@
 	    return !prevProps.isScroll === this.props.isScroll;
 	  },
 	  handleScroll: function handleScroll(event) {
-	    var scrollTop = event.srcElement.body.scrollTop;
-	    if (scrollTop > 320) {
-	      this.props.collapseHeader();
-	    } else {
-	      this.props.stretchHeader();
-	    }
+	    var timeout = null;
+	    //var scrollTop = event.srcElement.body.scrollTop;
+	    // if(scrollTop > 10) {
+	    console.log("scrolling started");
+	    this.props.collapseHeader();
+	    // }
+	    // else {
+	    //   this.props.stretchHeader();
+	    // }
+	    clearTimeout(timeout);
+	    var that = this;
+	    timeout = setTimeout(function () {
+
+	      console.log("scrolling stopped");
+	      that.props.stretchHeader();
+	    }, 200);
 	  },
 	  render: function render() {
 	    var isScroll = this.props.isScroll;
+	    console.log("in render :::: " + isScroll);
 	    return React.createElement(
 	      'div',
-	      { className: isScroll ? "header header-fixed" : "header" },
+	      { className: isScroll ? "header" : "header" },
 	      React.createElement(
 	        'div',
-	        { className: isScroll ? "profile profile-fixed" : "profile" },
-	        React.createElement('div', { className: isScroll ? "avatar avatar-fixed" : "avatar" }),
+	        { className: isScroll ? "profile" : "profile" },
+	        React.createElement('div', { className: isScroll ? "avatar" : "avatar" }),
 	        React.createElement(
 	          'div',
 	          { className: 'profile-text title' },
@@ -29541,13 +29552,13 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: isScroll ? "hidden" : "profile-text title-fourth" },
+	          { className: isScroll ? "profile-text title-fourth" : "profile-text title-fourth" },
 	          'Full Stack Java and React Developer'
 	        )
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: isScroll ? "nav nav-fixed" : "nav" },
+	        { className: isScroll ? "nav" : "nav" },
 	        React.createElement(
 	          Link,
 	          { to: '/profile' },
@@ -29683,7 +29694,7 @@
 	  });
 	  return React.createElement(
 	    'div',
-	    null,
+	    { className: 'inner-container' },
 	    blogCards
 	  );
 	}
@@ -29823,7 +29834,7 @@
 	  }
 	  return React.createElement(
 	    "div",
-	    { className: "blog" },
+	    { className: "blog inner-container" },
 	    React.createElement(
 	      "div",
 	      { className: "blog-heading" },
@@ -29872,7 +29883,11 @@
 	ProfilePage.propTypes = {
 	  profile: React.PropTypes.shape({
 	    description: React.PropTypes.string,
-	    technologies: React.PropTypes.arrayOf(React.PropTypes.string),
+	    technologies: React.PropTypes.shape({
+	      backend: React.PropTypes.arrayOf(React.PropTypes.string),
+	      frontend: React.PropTypes.arrayOf(React.PropTypes.string),
+	      tools: React.PropTypes.arrayOf(React.PropTypes.string)
+	    }),
 	    projects: React.PropTypes.arrayOf(React.PropTypes.shape({
 	      id: React.PropTypes.number,
 	      description: React.PropTypes.string,
@@ -29918,24 +29933,116 @@
 	var React = __webpack_require__(4);
 	var Project = __webpack_require__(286);
 	function Profile(props) {
-	  var projects = [];
+	  var projects = [],
+	      backTechs = [],
+	      frontTechs = [],
+	      tools = [];
 	  if (props.profile.projects) {
 	    projects = props.profile.projects.map(function (project) {
 	      return React.createElement(Project, { key: project.id, project: project });
 	    });
 	  }
+	  if (props.profile.technologies) {
+	    backTechs = props.profile.technologies.backend.map(function (tech, index) {
+	      return React.createElement(
+	        'div',
+	        { className: 'tech', key: index },
+	        React.createElement(
+	          'div',
+	          null,
+	          tech
+	        ),
+	        React.createElement('img', { src: "/images/logos/" + tech + ".svg" })
+	      );
+	    });
+	    frontTechs = props.profile.technologies.frontend.map(function (tech, index) {
+	      return React.createElement(
+	        'div',
+	        { className: 'tech', key: index },
+	        React.createElement(
+	          'div',
+	          null,
+	          tech
+	        ),
+	        React.createElement('img', { src: "/images/logos/" + tech + ".svg" })
+	      );
+	    });
+	    tools = props.profile.technologies.tools.map(function (tech, index) {
+	      return React.createElement(
+	        'div',
+	        { className: 'tech', key: index },
+	        React.createElement(
+	          'div',
+	          null,
+	          tech
+	        ),
+	        React.createElement('img', { src: "/images/logos/" + tech + ".svg" })
+	      );
+	    });
+	  }
 
 	  return React.createElement(
 	    'div',
-	    { className: 'profile' },
-	    React.createElement(
-	      'h1',
-	      { className: 'profile-heading' },
-	      'this is profile'
-	    ),
+	    { className: 'profile-main' },
 	    React.createElement(
 	      'div',
 	      { className: 'profile-content' },
+	      React.createElement(
+	        'h1',
+	        { className: 'projects-heading' },
+	        'SKILLS'
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'tech-section' },
+	        React.createElement(
+	          'div',
+	          { className: 'tech-component' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            'BACKEND'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'tech-container' },
+	            backTechs
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'tech-component' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            'UI/UX'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'tech-container' },
+	            frontTechs
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'tech-component' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            'TOOLS'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'tech-container' },
+	            tools
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'h1',
+	        { className: 'projects-heading' },
+	        'PROJECTS'
+	      ),
 	      projects
 	    )
 	  );
@@ -29968,7 +30075,7 @@
 	      { className: 'project-content' },
 	      React.createElement(
 	        'div',
-	        { className: 'project-heading' },
+	        { className: 'project-heading title' },
 	        React.createElement(
 	          Link,
 	          { to: props.project.url },
@@ -29977,7 +30084,7 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'project-detail' },
+	        { className: 'project-detail title-half' },
 	        props.project.description
 	      ),
 	      React.createElement(

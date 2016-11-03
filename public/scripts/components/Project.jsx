@@ -7,10 +7,10 @@ function Project (props) {
           <Link to={props.project.url}><img src={props.project.image}></img></Link>
         </div>
         <div className="project-content">
-          <div className="project-heading">
+          <div className="project-heading title">
             <Link to={props.project.url}>{props.project.name}</Link>
           </div>
-          <div className="project-detail">
+          <div className="project-detail title-half">
             {props.project.description}
           </div>
           <div className="project-tech">
